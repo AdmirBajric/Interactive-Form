@@ -167,7 +167,7 @@ const nameInputValidation = () => {
   const previousEl = nameInput.previousElementSibling.textContent;
   // If input value matches the regular expression and when the input value is not zero. Adding style to the border and remove the error message if exist.
   if (regex.test(nameInput.value) && nameInput.value.length > 0) {
-    nameInput.style.border = "2px solid white";
+    nameInput.style.border = "3px solid #7dce94";
     if (previousEl === message) {
       nameInput.previousElementSibling.remove();
     }
@@ -211,7 +211,7 @@ const mailInputValidation = () => {
     validSignAt > 0 &&
     validSignDot > validSignAt
   ) {
-    emailInput.style.border = "2px solid white";
+    emailInput.style.border = "3px solid #7dce94";
     if (previousEl === message) {
       emailInput.previousElementSibling.remove();
     }
@@ -296,7 +296,7 @@ const checkCreditCardValidation = (element, fromForm) => {
   let nextEl = inputs[position].nextElementSibling;
   // The if condition test the input value with the regex test.
   if (regex[position].test(inputs[position].value)) {
-    inputs[position].style.border = "2px solid white";
+    inputs[position].style.border = "3px solid #7dce94";
     // If the next element from the input field exist, element remove.
     if (nextEl) {
       nextEl.remove();
