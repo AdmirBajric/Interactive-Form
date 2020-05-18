@@ -25,3 +25,12 @@
 11. Added error messages for name, email, register for activities, credit card, zip code and cvv code inputs
 12. The form submits when no errors appears, the errors are added to the global error array in all functions which check the validation of each field
 13. Form works without Javascript, when js is not work the user has access to all input fields, all inputs fields are on the page
+14. Added two part error messages for the credit card inputs, when inputs are blank and when the inputs not matched the required regular expressions in the functions
+15. Added real time error messages to the fields that are required for testing
+
+#### More details
+
+1. When the button "Register" is clicked, the eventListener on the form is fired with the event 'submit'.
+2. The callback function calls all the functions for testing validation.
+3. The functions validating the inputs with the regular expressions, if the regular expression is not matched with the inputs values, error messages are displayed on the page.
+4. The same happens for the real time validation. All inputs have eventListeners with the events "keyup" and "click" and the same functions are called to test validation.

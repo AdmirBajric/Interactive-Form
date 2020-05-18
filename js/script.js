@@ -280,13 +280,13 @@ const checkCreditCardValidation = (element, fromForm) => {
    * regex[2] - only numbers 3 digit
    */
   const regex = [/^\d{13,16}$/, /^\d{5}$/, /^\d{3}$/];
-  // The cvvMessage array stores the error messages for the case something is entered in the input field.
+  // The cvvMessage array stores the error messages for the case something is entered but not matched in the input field.
   const cvvMessage = [
     "Numbers must be between 13 and 16 numbers.",
     "The zip code must be 5 numbers long.",
     "The CVV number must contain 3 numbers.",
   ];
-  // The blankMessage array stores the error messages for input fields if empty.
+  // The blankMessage array stores the error messages for input fields when the fields are empty.
   const blankMessage = [
     "Please enter a credit card number.",
     "Please enter your Zip Code.",
