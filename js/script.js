@@ -34,8 +34,9 @@ selectOption.addEventListener("change", (e) => {
   }
 });
 
-// Hide the div id='colors-js-puns'.
+// Hide the div id='colors-js-puns' and option textContent Select Theme.
 colorJsPuns.hidden = true;
+selectDesign.firstElementChild.hidden = true;
 // The select element id='color' store his children to the colorOptions variable.
 const colorOptions = shirtColor.children;
 // Loop over the variable colorOptions children and hide them.
@@ -239,10 +240,13 @@ const checkboxInputValidation = () => {
     }
     // If the array ifChecked length is zero add the color style to the legend element textContent.
     if (ifChecked.length === 0) {
+      activities.firstElementChild.innerHTML =
+        "Please choose at lest one activities";
       activities.firstElementChild.style.color = "red";
       errorMessages.push(activities.firstElementChild.textContent);
       // If the array ifChecked length is greater than zero - when a checkbox is checked, add the color style to inherit.
     } else if (ifChecked.length > 0) {
+      activities.firstElementChild.innerHTML = "Register for Activities";
       activities.firstElementChild.style.color = "inherit";
     }
   }
