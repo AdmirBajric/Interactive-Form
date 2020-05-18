@@ -24,7 +24,6 @@ let errorMessages = [];
 let total = 0;
 // Hide the input field id='other-title'.
 inputOther.style.display = "none";
-
 // Add eventListener to the select element, when the option Other is changed then the input field id='other-title' is visible or hide on the page.
 selectOption.addEventListener("change", (e) => {
   if (e.target.value === "other") {
