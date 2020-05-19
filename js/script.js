@@ -132,7 +132,7 @@ const calcDay = (dataDay, name) => {
 const options = paymentsOption.children;
 paypal.hidden = true;
 bitcoin.hidden = true;
-options[0].style.display = "none";
+options[0].remove();
 /**
  * Add eventLister on the select element id='payment' with the event change.
  * Using switch statement to show or hide the elements.
@@ -234,20 +234,19 @@ const checkboxInputValidation = () => {
   // The for loop is looping over the inputs checkboxes and stores the boolean true in the array ifChecked.
   for (let i = 0; i < activitiesInputs.length; i++) {
     if (activitiesInputs[i].checked) {
-      ifChecked.push(activitiesInputs[i].checked);
-      console.log(ifChecked);
+      ifChecked.push(!activitiesInputs[i].checked);
     }
-    // If the array ifChecked length is zero add the color style to the legend element textContent.
-    if (ifChecked.length === 0) {
-      activities.firstElementChild.innerHTML =
-        "Please choose at lest one activities";
-      activities.firstElementChild.style.color = "red";
-      errorMessages.push(activities.firstElementChild.textContent);
-      // If the array ifChecked length is greater than zero - when a checkbox is checked, add the color style to inherit.
-    } else if (ifChecked.length > 0) {
-      activities.firstElementChild.innerHTML = "Register for Activities";
-      activities.firstElementChild.style.color = "inherit";
-    }
+  }
+  // If the array ifChecked length is zero add the color style to the legend element textContent.
+  if (ifChecked.length === 0) {
+    activities.firstElementChild.innerHTML =
+      "Please choose at lest one activities";
+    activities.firstElementChild.style.color = "red";
+    errorMessages.push(activities.firstElementChild.textContent);
+    // If the array ifChecked length is greater than zero - when a checkbox is checked, add the color style to inherit.
+  } else if (ifChecked.length > 0) {
+    activities.firstElementChild.innerHTML = "Register for Activities";
+    activities.firstElementChild.style.color = "inherit";
   }
 };
 // Function checkCreditCardValidation tests the inputs for validation.
@@ -386,7 +385,8 @@ form.addEventListener("submit", (e) => {
   }
   // If no error messages ar in the global array errorMessages, page will be refreshed.
   if (errorMessages.length === 0) {
-    window.location.reload();
+    window.location.reload(true);
+    return false;
   }
   // Clear the error message array
   errorMessages = [];
