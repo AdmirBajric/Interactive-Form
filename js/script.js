@@ -158,11 +158,10 @@ paymentsOption.addEventListener("change", (e) => {
 });
 // Function nameInputValidation test the name input value.
 const nameInputValidation = () => {
-  // Regular expression must be the first 5 characters of the lowercase letter, after that another 15 characters which can be lowercase letters or numbers.
-  const regex = /^[a-z]{5}[a-z0-9.]{0,15}$/;
+  // Regular expression, can only contain letters a-z in lowercase
+  const regex = /^[a-z]+$/;
   // Variable message contains a error message when the condition is false.
-  const message =
-    "Please add your name between 5-20 characters, the first five must be a letter.";
+  const message = "Please add your name";
   const previousEl = nameInput.previousElementSibling.textContent;
   // If input value matches the regular expression and when the input value is not zero. Adding style to the border and remove the error message if exist.
   if (regex.test(nameInput.value) && nameInput.value.length > 0) {
@@ -185,18 +184,10 @@ const nameInputValidation = () => {
 };
 // Function mailInputValidation test the mail input value.
 const mailInputValidation = () => {
-  /**
-   * Regular expression must be the first 5 characters of the lowercase letter,
-   * after that another 20 characters which can be lowercase letters or numbers,
-   * a at sign,
-   * after that lowercase letters that go from zero or 10 characters,
-   * a dot sign,
-   * and followed with domain names
-   */
-  const regex = /^[a-z]{5}[a-z0-9]{0,20}@[a-z]{0,10}\.(com|org|net|int|edu|gov|mil)$/;
+  // Regular expression, must be a valid email address
+  const regex = /^[^@]+@[^@.]+\.[a-z]+$/i;
   // Variable message contains a error message when the condition is false.
-  const message =
-    "Please enter a valid email address, the first five characters must be a letter.";
+  const message = "Please enter a valid email address";
   /**
    * validSignAt - the position of the first occurrence of the At sign
    * validSignDot - the position of the last occurrence of the Dot sign
@@ -249,35 +240,23 @@ const checkboxInputValidation = () => {
     activities.firstElementChild.style.color = "inherit";
   }
 };
-// Function checkCreditCardValidation tests the inputs for validation.
-const checkCreditCardValidation = (element, fromForm) => {
-  // The position variable is created to store the target position which needs to be tested for the validation.
-  let position = 0;
-  /**
-   * The switch statement stores the number to the position variable from the element argument.
-   * The element argument is send from the function realTimeValidation that comes from the input eventListener with the event keyup.
-   * When the event keyup is fired, the realTimeValidation functions is called.
-   * In this function a if statement is running, when e.target.id matches inputs id, this checkCreditCardValidation function is called with the parameter e.target.id.
-   * In this case the element argument is the id from input that was clicked.
-   */
-  switch (element) {
-    case "cc-num":
-      position = 0;
-      break;
-    case "zip":
-      position = 1;
-      break;
-    case "cvv":
-      position = 2;
-      break;
-  }
-  /**
-   * The regex array variable stores the regular expression for each input.
-   * regex[0] - only numbers between 13 - 16 digit
-   * regex-[1] - only numbers 5 digit
-   * regex[2] - only numbers 3 digit
-   */
-  const regex = [/^\d{13,16}$/, /^\d{5}$/, /^\d{3}$/];
+// Check for Credit Card Validation
+const checkCreditCard = () => {
+  const regex = /^\d{13,16}$/;
+  createErrorMsg(0, regex);
+};
+// Check for Zip Code Validation
+const checkZipCode = () => {
+  const regex = /^\d{5}$/;
+  createErrorMsg(1, regex);
+};
+// Check for CVV Code Validation
+const checkCvvCode = () => {
+  const regex = /^\d{3}$/;
+  createErrorMsg(2, regex);
+};
+// Checks for validation and print the error messages
+const createErrorMsg = (el, regex) => {
   // The cvvMessage array stores the error messages for the case something is entered but not matched in the input field.
   const cvvMessage = [
     "Numbers must be between 13 and 16 numbers.",
@@ -290,89 +269,55 @@ const checkCreditCardValidation = (element, fromForm) => {
     "Please enter your Zip Code.",
     "Please enter your CVV number.",
   ];
-  // nextEl variable store the next element from the input field.
-  let nextEl = inputs[position].nextElementSibling;
-  // The if condition test the input value with the regex test.
-  if (regex[position].test(inputs[position].value)) {
-    inputs[position].style.border = "3px solid #7dce94";
+  let nextEl = inputs[el].nextElementSibling;
+  if (regex.test(inputs[el].value)) {
+    inputs[el].style.border = "3px solid #7dce94";
     // If the next element from the input field exist, element remove.
     if (nextEl) {
       nextEl.remove();
     }
   } else {
-    // If regex test is false the else statement is running.
-    // If the next element from the input field exist, element remove.
     if (nextEl) {
       nextEl.remove();
     }
-    /**
-     * The fromForm parameter is send from the function checkCreditCardValidation(e.target.id, true), that is called from the form when is submitted.
-     * If the condition is true that means the form is submitted.
-     * Print the error messages to all inputs depending on whether the field is empty or not.
-     */
-    if (fromForm) {
-      for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].value === "") {
-          printMsg(i, blankMessage[i]);
-          errorMessages.push(blankMessage[i]);
-        } else {
-          printMsg(i, cvvMessage[i]);
-          errorMessages.push(cvvMessage[i]);
-        }
-      }
+    // If input is empty call printMsg function with the appropriate message
+    if (inputs[el].value === "") {
+      printMsg(el, blankMessage[el]);
+      errorMessages.push(blankMessage[el]);
     } else {
-      // This else statement handles the eventListeners for the real time error messages.
-      if (inputs[position].value === "") {
-        printMsg(position, blankMessage[position]);
-        errorMessages.push(blankMessage[position]);
-      } else {
-        printMsg(position, cvvMessage[position]);
-        errorMessages.push(cvvMessage[position]);
-      }
-    }
-  }
-  // Function printMsg is used to print the error messages that coming from the form when is submitted or the real time eventListers with the keyup event.
-  function printMsg(position, message) {
-    inputs[position].style.border = "2px solid red";
-    if (!inputs[position].nextElementSibling) {
-      const el = document.createElement("label");
-      el.textContent = message;
-      el.style.color = "red";
-      inputs[position].parentNode.appendChild(el);
+      // If input is not empty but still not valid call printMsg function with the appropriate message
+      printMsg(el, cvvMessage[el]);
+      errorMessages.push(cvvMessage[el]);
     }
   }
 };
-/**
- * Function realTimeValidation is called from the eventListeners that is fired.
- * A simple if condition checks the e.target.attributes and call the appropriate function.
- */
-const realTimeValidation = (e) => {
-  if (e.target.id === "name") {
-    nameInputValidation();
-  } else if (e.target.id === "mail") {
-    mailInputValidation();
-  } else if (e.target.type === "checkbox") {
-    checkboxInputValidation();
-  } else if (
-    e.target.id === "cc-num" ||
-    e.target.id === "zip" ||
-    e.target.id === "cvv"
-  ) {
-    checkCreditCardValidation(e.target.id);
+// Add the styles, create the element for error message and add to the page
+const printMsg = (position, message) => {
+  inputs[position].style.border = "2px solid red";
+  if (!inputs[position].nextElementSibling) {
+    const el = document.createElement("label");
+    el.textContent = message;
+    el.style.color = "red";
+    inputs[position].parentNode.appendChild(el);
   }
-  // Clear the error message array
-  errorMessages = [];
 };
-// Setting the eventListeners for the validation.
-nameInput.addEventListener("keyup", realTimeValidation);
-emailInput.addEventListener("keyup", realTimeValidation);
-activities.addEventListener("click", realTimeValidation);
 
-for (let i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener("keyup", realTimeValidation);
+// Setting the eventListeners for the validation.
+nameInput.addEventListener("keyup", nameInputValidation);
+emailInput.addEventListener("keyup", mailInputValidation);
+
+for (let i = 0; i < activitiesInputs.length; i++) {
+  activitiesInputs[i].addEventListener("click", checkboxInputValidation);
 }
+
+inputs[0].addEventListener("keyup", checkCreditCard);
+inputs[1].addEventListener("keyup", checkZipCode);
+inputs[2].addEventListener("keyup", checkCvvCode);
+
 // Adding eventListener to the form.
 form.addEventListener("submit", (e) => {
+  // Clear the error message array
+  errorMessages = [];
   // Cancels the event if it is cancelable.
   e.preventDefault();
   // Calling the functions to check for validation.
@@ -381,13 +326,13 @@ form.addEventListener("submit", (e) => {
   checkboxInputValidation();
   // If the credit card is hidden, the validation for credit card will not called.
   if (!creditCard.attributes.hidden) {
-    checkCreditCardValidation(e.target.id, true);
+    checkCreditCard();
+    checkZipCode();
+    checkCvvCode();
   }
   // If no error messages ar in the global array errorMessages, page will be refreshed.
   if (errorMessages.length === 0) {
     window.location.reload(true);
     return false;
   }
-  // Clear the error message array
-  errorMessages = [];
 });
