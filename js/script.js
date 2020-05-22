@@ -159,7 +159,7 @@ paymentsOption.addEventListener("change", (e) => {
 // Function nameInputValidation test the name input value.
 const nameInputValidation = () => {
   // Regular expression, can only contain letters a-z in lowercase
-  const regex = /^[a-z]+$/;
+  const regex = /^[A-Za-z]+$/;
   // Variable message contains a error message when the condition is false.
   const message = "Please add your name";
   const previousEl = nameInput.previousElementSibling.textContent;
